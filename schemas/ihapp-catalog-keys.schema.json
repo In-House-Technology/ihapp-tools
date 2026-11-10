@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Estoca/inhousecloud/schemas/ihapp-catalog-keys.schema.json",
+  "title": "Trusted catalog index public keys",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["key_id", "alg", "public_key"],
+    "properties": {
+      "key_id": { "type": "string", "minLength": 1 },
+      "alg": { "const": "ed25519" },
+      "public_key": { "type": "string", "maxLength": 44, "pattern": "^[A-Za-z0-9+/]{42}[AEIMQUYcgkosw048]=$" }
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Estoca/inhousecloud/schemas/ihapp-catalog-index.schema.json",
+  "title": "In House Apps curated catalog index v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "index_version": {
+      "const": 1
+    },
+    "apps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/App"
+      }
+    }
+  },
+  "required": [
+    "index_version",
+    "apps"
+  ],
+  "$defs": {
+    "App": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "pattern": "^[^\\r\\n]+$",
+          "minLength": 1,
+          "maxLength": 140
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+          },
+          "uniqueItems": true
+        },
+        "license": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9.+-]*$"
+        },
+        "id": {
+          "$ref": "https://github.com/Estoca/inhousecloud/schemas/ihapp-catalog.schema.json#/$defs/CatalogId"
+        },
+        "repository": {
+          "type": "string",
+          "pattern": "^https://[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?(?::[0-9]+)?/[^\\s?#@]+$"
+        },
+        "tag_prefix": {
+          "type": "string",
+          "default": "v"
+        },
+        "versions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Version"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "summary",
+        "repository",
+        "license",
+        "versions"
+      ]
+    },
+    "Version": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "$ref": "https://github.com/Estoca/inhousecloud/schemas/ihapp-catalog.schema.json#/$defs/SemVer"
+        },
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "approved_by": {
+          "type": "string",
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+        },
+        "approved_at": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "version",
+        "commit",
+        "approved_by",
+        "approved_at"
+      ]
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "ihapp-tools",
+  "version": "1.0.0",
+  "description": "In House Apps catalog format: schemas and the validator for app origins, the curated index and its signature.",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "bin": { "ihapp-catalog": "bin/ihapp-catalog.js" },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "yaml": "^2.8.1"
+  },
+  "engines": { "node": ">=20" }
+}

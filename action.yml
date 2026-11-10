@@ -1,0 +1,47 @@
+name: Validate In House Apps catalog
+description: Validate an app origin, or fetch and validate a curated catalog index.
+inputs:
+  mode:
+    description: app or index
+    default: app
+  path:
+    description: Origin directory or catalog.yaml path, relative to the workspace
+    default: .
+  tag:
+    description: App version tag (requires commit)
+  commit:
+    description: Pinned app commit (requires tag)
+  org:
+    description: Restrict index repositories to this GitHub organization
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - name: Install validator dependencies
+      shell: bash
+      run: npm ci --prefix "$GITHUB_ACTION_PATH" --omit=dev
+    - name: Validate catalog
+      shell: bash
+      env:
+        CATALOG_MODE: ${{ inputs.mode }}
+        CATALOG_PATH: ${{ inputs.path }}
+        CATALOG_TAG: ${{ inputs.tag }}
+        CATALOG_COMMIT: ${{ inputs.commit }}
+        CATALOG_ORG: ${{ inputs.org }}
+      run: |
+        cli="$GITHUB_ACTION_PATH/bin/ihapp-catalog.js"
+        case "$CATALOG_MODE" in
+          app)
+            args=(validate "$CATALOG_PATH")
+            [[ -z "$CATALOG_TAG" ]] || args+=(--tag "$CATALOG_TAG")
+            [[ -z "$CATALOG_COMMIT" ]] || args+=(--commit "$CATALOG_COMMIT")
+            ;;
+          index)
+            args=(validate-index "$CATALOG_PATH" --fetch)
+            [[ -z "$CATALOG_ORG" ]] || args+=(--org "$CATALOG_ORG")
+            ;;
+          *) echo 'mode must be app or index' >&2; exit 2 ;;
+        esac
+        node "$cli" "${args[@]}"

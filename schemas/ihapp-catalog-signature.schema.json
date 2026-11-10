@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Estoca/inhousecloud/schemas/ihapp-catalog-signature.schema.json",
+  "title": "Catalog index signature v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["v", "alg", "key_id", "sha256", "signature"],
+  "properties": {
+    "v": { "const": 1 },
+    "alg": { "const": "ed25519" },
+    "key_id": { "type": "string", "minLength": 1 },
+    "sha256": { "type": "string", "maxLength": 64, "pattern": "^[a-f0-9]{64}$" },
+    "signature": { "type": "string", "maxLength": 88, "pattern": "^[A-Za-z0-9+/]{85}[AQgw]==$" }
+  }
+}
