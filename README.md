@@ -9,6 +9,10 @@ The public contract of the **In House Apps** catalog: JSON Schemas and a validat
 The InHouse cloud (ihc) applies the same rules when it installs or updates an app; this
 repository is what publishers and the catalog CI use. MIT licensed.
 
+Use this repository to validate source and catalog entries. For installing or updating an
+app on managed InHouseCloud, start with the [customer catalog guide](https://inhouse.technology/cloud/docs/catalog).
+For submitting source for curation, see the [publication guide](https://inhouse.technology/cloud/docs/publish-an-app).
+
 ## Command line
 
 ```bash
